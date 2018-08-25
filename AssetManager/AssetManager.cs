@@ -54,7 +54,7 @@ namespace AssetManagerDemo {
             }
             catch (Exception ex) {
                 if (ex is ContentLoadException) {
-                    GeneralUtils.LogError($" => Could not find {assetDef.Name} ({assetDef.Path}).");
+                    GeneralUtils.LogError($" => Could not find/load {assetDef.Name} ({assetDef.Path}). {ex}");
                 }
                 else if (ex is NotSupportedException) {
                     GeneralUtils.LogError($" => The type {assetDef.Type.ToString().Split('.').Last()} for {assetDef.Name} ({assetDef.Path}) isn't supported.");
