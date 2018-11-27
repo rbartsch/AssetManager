@@ -46,6 +46,15 @@ namespace AssetManagerDemo {
                 else if (assetDef.Type == typeof(Song)) {
                     asset.Assign(content.Load<Song>(assetDef.Path));
                 }
+                else if (assetDef.Type == typeof(Model)) {
+                    asset.Assign(content.Load<Model>(assetDef.Path));
+                }
+                else if (assetDef.Type == typeof(Effect)) {
+                    asset.Assign(content.Load<Effect>(assetDef.Path));
+                }
+                else if (assetDef.Type == typeof(TextureCube)) {
+                    asset.Assign(content.Load<TextureCube>(assetDef.Path));
+                }
                 else {
                     throw new NotSupportedException();
                 }
@@ -59,8 +68,11 @@ namespace AssetManagerDemo {
                 else if (ex is NotSupportedException) {
                     GeneralUtils.LogError($" => The type {assetDef.Type.ToString().Split('.').Last()} for {assetDef.Name} ({assetDef.Path}) isn't supported.");
                 }
+                else if (ex is InvalidCastException) {
+                    GeneralUtils.LogWarning($" => Skipping {assetDef.Name} ({assetDef.Path}). {ex.Message}");
+                }
                 else {
-                    GeneralUtils.LogError(" => An unknown error has occured.");
+                    GeneralUtils.LogError($" => An unknown error has occured. {ex}");
                 }
             }
         }
@@ -160,6 +172,9 @@ namespace AssetManagerDemo {
         public int TotalLoaded() => assets.Count;
 
 
-        public void UnloadAll() => content.Unload();
+        public void UnloadAll() {
+            GeneralUtils.LogInfo($"Unloading content");
+            content.Unload();
+        }
     }
 }
